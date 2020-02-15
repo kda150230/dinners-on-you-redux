@@ -1,5 +1,5 @@
 package main;
 
-public class Ship {
-
+public abstract class Ship extends Entity {
+	
 }

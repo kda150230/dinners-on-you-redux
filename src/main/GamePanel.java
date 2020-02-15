@@ -12,16 +12,27 @@ public class GamePanel extends JPanel{
 	private static final long serialVersionUID = 1L;
 	final static int xRes = 1600, yRes = 900;
 	
+	static JFrame frame;
+	static JPanel gamePanel;
+	
+	//PlayerShip myShip = new PlayerShip(new Vector(500, 500), 0);
 
 	public void paint(Graphics g) {
 		// Draws the menu background color
 		g.setColor(new Color(0, 1, 41));
 		g.fillRect(0, 0, xRes, yRes);
+		//myShip.draw(g); /* this works though... */
+	}
+	
+	public static void add(JComponent comp) {
+		frame.add(comp);
+		comp.setVisible(true);
+		//comp.setLayout(null);
 	}
 	
 	public static void init() {
-		JFrame frame = new JFrame("Dinner's On You!");
-		JPanel gamePanel = new GamePanel();
+		frame = new JFrame("Dinner's On You!");
+		gamePanel = new GamePanel();
 		gamePanel.setVisible(true);
 		gamePanel.setLayout(null);
 		
@@ -65,6 +76,10 @@ public class GamePanel extends JPanel{
 			public void mouseClicked(MouseEvent e) {
 				GameManager gameManager = new GameManager();
 				gameManager.start();
+				
+				playButton.setVisible(false);
+				//frame.remove(playButton);
+				
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {

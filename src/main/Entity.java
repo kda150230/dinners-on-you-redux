@@ -10,13 +10,14 @@ import java.awt.Shape;
 public abstract class Entity {
 	
 	//Class variables
-	private Vector loc;
-	private Vector speed;
-	private float acceleration; 
-	private boolean isAlive = true;
+	protected Vector loc;
+	protected Vector speed;
+	protected float acceleration;
+	protected float angle;
+	protected boolean isAlive = true;
 	public Shape hitbox;
 	
-	public abstract void draw(Graphics g);
+	//public abstract void draw(Graphics g);
 
 	public void kill() {
 		isAlive = false;
