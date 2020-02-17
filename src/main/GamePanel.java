@@ -3,6 +3,7 @@ package main;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
 
 import javax.swing.*;
 
@@ -24,11 +25,13 @@ public class GamePanel extends JPanel{
 		//myShip.draw(g); /* this works though... */
 	}
 	
+	/*
 	public static void add(JComponent comp) {
 		frame.add(comp);
 		comp.setVisible(true);
 		//comp.setLayout(null);
 	}
+	*/
 	
 	public static void init() {
 		frame = new JFrame("Dinner's On You!");
@@ -74,12 +77,11 @@ public class GamePanel extends JPanel{
 		playButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				// Closes menu frame
+				frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+				// Creates GameManager instance and starts the game
 				GameManager gameManager = new GameManager();
-				gameManager.start();
-				
-				playButton.setVisible(false);
-				//frame.remove(playButton);
-				
+				gameManager.start();		
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -94,5 +96,4 @@ public class GamePanel extends JPanel{
 		// Add the playButton to our JFrame
 		frame.add(playButton);
 	}
-	
 }

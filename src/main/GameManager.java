@@ -4,9 +4,10 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class GameManager extends JComponent implements Runnable {
+public class GameManager extends JPanel implements Runnable {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -14,19 +15,37 @@ public class GameManager extends JComponent implements Runnable {
 	long startTime, endTime, framePeriod;
 
 	//Graphics g;
-	JComponent game;
 	
-	PlayerShip myShip;
+	final static int xRes = 1600, yRes = 900;
 	
+	JFrame frame;
+	JPanel game;
+	
+	static PlayerShip myShip;
+	
+	Thread gameThread;
 	
 	// Called when "Play" button on main menu is pressed
 	public void start() {
+		
 		/* Other pre-game initialization tasks should go here */
+		
+		myShip = new PlayerShip(new Vector(5, 5), 0);
+		
 		gameActive = true;
 		
-		// Creates new JPanel for us to draw on and adds it to the GamePanel frame
+		// Inits JFrame/JPanel for drawing
+		frame = new JFrame("Dinner's on You!");
 		game = new GameManager();
-		GamePanel.add(game);
+		game.setVisible(true);
+		game.setLayout(null);
+		
+		frame.setSize(xRes, yRes);
+		frame.add(game);
+		
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		frame.setVisible(true);
 		
 		//Starts timer
 		startTime = 0;
@@ -36,31 +55,38 @@ public class GameManager extends JComponent implements Runnable {
 		// Effective target FPS is 1000 / framePeriod
 		framePeriod = 16; //16 ms ~ 60 fps
 		
+		//repaint();
+		
 		// Creates and starts the main game thread
-		Thread gameThread = new Thread(this);
+		gameThread = new Thread(this);
 		gameThread.start();
 	}
 	
-	// Initializes all starting entities such as player ships and bases
+	/* Initializes all starting entities such as player ships and bases
 	public void initEntities() {
-		myShip = new PlayerShip(new Vector(300, 300), 1);
-	}
+		myShip = new PlayerShip(new Vector(500, 500), 1);
+	}*/
 	
 	// Paint component method of the main game canvas JPanel
-	public void paintComponent(Graphics g) {
-		System.out.println("Paint called");
+	@Override
+	public void paint(Graphics g) {
 		
-		super.paintComponent(g);
+		super.paint(g);
+		
+		g.setColor(Color.red);
+		g.drawRect(0, 0, 300, 300);
 		
 		g.setColor(Color.green);
-		g.drawRect(50, 50, 200, 450);
+		g.drawRect(0, 0, 500, 500);
 		
-		myShip.draw(g); /* This is throwing a null pointer exception for some reason... */
+		if(myShip != null) {
+			myShip.draw(g);
+		}
 	}
 	
 	public void run() {
 		
-		initEntities();
+		//initEntities();
 		
 		// Main game loop
 		while(gameActive) {
@@ -74,7 +100,14 @@ public class GameManager extends JComponent implements Runnable {
 			 * 
 			 */
 			
+			//frame.repaint();
+			game.repaint();
 			repaint();
+			
+			//myShip.setAngle(.0001);
+			myShip.moveTest();
+			
+			System.out.println("x: "+myShip.loc.x);
 			
 			//System.out.println("Update at " + System.currentTimeMillis());
 			

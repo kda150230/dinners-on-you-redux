@@ -12,8 +12,8 @@ public abstract class Entity {
 	//Class variables
 	protected Vector loc;
 	protected Vector speed;
-	protected float acceleration;
-	protected float angle;
+	protected double acceleration;
+	protected double angle;
 	protected boolean isAlive = true;
 	public Shape hitbox;
 	
