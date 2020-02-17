@@ -6,11 +6,6 @@ import java.awt.Graphics;
 public class PlayerShip extends Ship {
 	
 	// Coordinates used to create vector shape for ship, centered at (0, 0)
-	int[] xPts = {14,-10,-6,-10},
-		  yPts = {0,-8,0,8};
-				 //origFlameXPts = {-6,-23,-6}, 
-				 //origFlameYPts = {-3,0,3};
-	
 	final int[] origXPts = {14,-10,-6,-10};
 	final int[] origYPts = {0,-8,0,8};
 	
@@ -19,21 +14,26 @@ public class PlayerShip extends Ship {
 	
 	// ==============================
 	
-	// Constructor (starting location)
-	public PlayerShip(Vector loc, double angle) {
-		this.loc = loc;
+	// Constructor (starting position)
+	public PlayerShip(Vector pos, double angle) {
+		this.pos = pos;
 		this.angle = angle;
+		
+		// Clone avoids bad copy side effects
+		xPts = origXPts.clone(); 
+		yPts = origYPts.clone();
+		
 		updatePoints();
 	}
 	
 	// ==============================
 
 	// Updates vector points based on current position
-	// Needs to be called every time the ships's location vector changes
-	public void updatePoints() {
+	// Needs to be called every time the ships's position vector changes
+	void updatePoints() {
 		for(int i=0; i<xPts.length; i++) {
-			xPts[i] = origXPts[i] + loc.x;
-			yPts[i] = origYPts[i] + loc.y;
+			xPts[i] = origXPts[i] + (int)pos.x;
+			yPts[i] = origYPts[i] + (int)pos.y;
 			
 			// These aren't working right now
 			//xPts[i]=(int)(xPts[i]*Math.cos(angle)-yPts[i]*Math.sin(angle));
@@ -41,11 +41,31 @@ public class PlayerShip extends Ship {
 		}
 	}
 	
+	// Moves the position vector depending on speed and heading, then updates
+	// the vector drawing points accordingly
+	public void move() {	
+		pos.x += (Math.cos(angle)*(speed));
+		pos.y += (Math.sin(angle)*(speed));
+		
+		updatePoints();
+	}
 	
 	public void moveTest() {
-		loc.x++;
+		pos.x++;
 		//angle+=.01;
 		updatePoints();
+	}
+	
+	public void setSpeed(double speed) {
+		this.speed = speed;
+	}
+	
+	public void addSpeed(double addedSpeed) {
+		this.speed += addedSpeed;
+	}
+	
+	public void addAngle(double addedAngle) {
+		this.angle += addedAngle;
 	}
 
 	
@@ -55,3 +75,8 @@ public class PlayerShip extends Ship {
 	}
 	
 }
+
+/*
+//origFlameXPts = {-6,-23,-6}, 
+//origFlameYPts = {-3,0,3};	 
+*/

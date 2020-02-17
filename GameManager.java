@@ -2,73 +2,105 @@ package main;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class GameManager extends JPanel implements Runnable {
 	
+	// Default versionUID for JStuff
 	private static final long serialVersionUID = 1L;
-
-	public static boolean gameActive = false;
-	long startTime, endTime, framePeriod;
-
-	//Graphics g;
 	
+	// Thread instance/time-keeping variables
+	Thread gameThread;
+	long startTime, endTime, framePeriod;
+	
+	// Determines game resolution
 	final static int xRes = 1600, yRes = 900;
 	
+	// Swing components for GUI elements
 	JFrame frame;
 	JPanel game;
 	
+	// Game objects must be static, as we're using an instance of this class for a JPanel
 	static PlayerShip myShip;
-	
-	Thread gameThread;
+
 	
 	// Called when "Play" button on main menu is pressed
 	public void start() {
 		
 		/* Other pre-game initialization tasks should go here */
 		
-		myShip = new PlayerShip(new Vector(15, 15), 0);
+		initEntities();
 		
-		gameActive = true;
+		/*
+		 * TODO: Clean up this section (is all this needed??)
+		 */
 		
 		// Inits JFrame/JPanel for drawing
 		frame = new JFrame("Dinner's on You!");
 		game = new GameManager();
+		
 		game.setVisible(true);
 		game.setLayout(null);
+		game.setSize(xRes, yRes);
+		
+		// Allows key listener to work when window is "focused"
+		game.setFocusable(true);
+		game.requestFocusInWindow();
+		
+		initKeyAdapter(game);
 		
 		frame.setSize(xRes, yRes);
 		frame.add(game);
+		//frame.pack();
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		frame.setVisible(true);
-		
-		//Starts timer
-		startTime = 0;
-		endTime = 0;
+		frame.setLayout(null);
 		
 		// Frame period represents time in ms between frame updates
 		// Effective target FPS is 1000 / framePeriod
 		framePeriod = 16; //16 ms ~ 60 fps
-		
-		//repaint();
 		
 		// Creates and starts the main game thread
 		gameThread = new Thread(this);
 		gameThread.start();
 	}
 	
-	/* Initializes all starting entities such as player ships and bases
+	// Initializes all starting entities such as player ships and bases
 	public void initEntities() {
-		myShip = new PlayerShip(new Vector(500, 500), 1);
-	}*/
+		myShip = new PlayerShip(new Vector(25, 25), 0);
+	}
+	
+	// Initializes key listener for game inputs
+	public void initKeyAdapter(JPanel game) {
+		game.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_W) {
+					System.out.println("Up!");
+					myShip.addSpeed(.2);
+				}
+				if(e.getKeyCode() == KeyEvent.VK_A) {
+					System.out.println("Left!");
+					myShip.addAngle(-.1);
+				}
+				if(e.getKeyCode() == KeyEvent.VK_S) {
+					System.out.println("Down!");
+					myShip.addSpeed(-.2);
+				}
+				if(e.getKeyCode() == KeyEvent.VK_D) {
+					System.out.println("Right!");
+					myShip.addAngle(.1);
+				}
+			}
+		});
+	}
 	
 	// Paint component method of the main game canvas JPanel
-	@Override
 	public void paint(Graphics g) {
 		
 		super.paint(g);
@@ -86,32 +118,24 @@ public class GameManager extends JPanel implements Runnable {
 	
 	public void run() {
 		
-		//initEntities();
-		
 		// Main game loop
-		while(gameActive) {
+		while(true) {
 			
 			// Marks time at start of this game loop
 			startTime = System.currentTimeMillis();
 			
 			/*
 			 * 
+			 * 
 			 * Update methods go here
+			 * 
 			 * 
 			 */
 			
-			//frame.repaint();
+			myShip.move();
+			
+			// Requests that AWT repaint our game JPanel we paint on in paint()
 			game.repaint();
-			repaint();
-			
-			//myShip.setAngle(.0001);
-			myShip.moveTest();
-			
-			System.out.println("x: "+myShip.loc.x);
-			System.out.println("xpts[0]: "+myShip.xPts[0]);
-			System.out.println("origxpts[0]: "+myShip.origXPts[0]);
-			
-			//System.out.println("Update at " + System.currentTimeMillis());
 			
 			// Sleep the thread between frames if updates are done
 			try{
