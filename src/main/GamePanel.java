@@ -15,8 +15,6 @@ public class GamePanel extends JPanel{
 	
 	static JFrame frame;
 	static JPanel gamePanel;
-	
-	//PlayerShip myShip = new PlayerShip(new Vector(500, 500), 0);
 
 	public void paint(Graphics g) {
 		// Draws the menu background color
@@ -24,14 +22,6 @@ public class GamePanel extends JPanel{
 		g.fillRect(0, 0, xRes, yRes);
 		//myShip.draw(g); /* this works though... */
 	}
-	
-	/*
-	public static void add(JComponent comp) {
-		frame.add(comp);
-		comp.setVisible(true);
-		//comp.setLayout(null);
-	}
-	*/
 	
 	public static void init() {
 		frame = new JFrame("Dinner's On You!");

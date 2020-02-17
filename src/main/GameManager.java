@@ -1,7 +1,6 @@
 package main;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -74,7 +73,7 @@ public class GameManager extends JPanel implements Runnable {
 	
 	// Initializes all starting entities such as player ships and bases
 	public void initEntities() {
-		myShip = new PlayerShip(new Vector(15, 15), 0);
+		myShip = new PlayerShip(new Vector(25, 25), 0);
 	}
 	
 	public void initKeyAdapter(JPanel game) {
@@ -82,7 +81,7 @@ public class GameManager extends JPanel implements Runnable {
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_A) {
 					System.out.println("Right!");
-					myShip.moveTest();
+					myShip.addSpeed(.2);
 				}
 			}
 		});
@@ -120,7 +119,7 @@ public class GameManager extends JPanel implements Runnable {
 			 * 
 			 */
 			
-			//myShip.moveTest();
+			myShip.move();
 			
 			// Requests that AWT repaint our game JPanel we paint on in paint()
 			game.repaint();

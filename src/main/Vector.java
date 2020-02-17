@@ -2,10 +2,10 @@ package main;
 
 public class Vector {
 	// Class variables
-	public int x, y;
+	public double x, y;
 	
 	// Constructor
-	public Vector(int x, int y) {
+	public Vector(double x, double y) {
 		this.x = x;
 		this.y = y;
 	}
@@ -30,8 +30,8 @@ public class Vector {
 	
 	// Multiplies vector by a scalar value
 	public void multByScalar(Vector v, double scalar) {
-		v.x = (int)(v.x * scalar);
-		v.y = (int)(v.y * scalar);
+		v.x = (v.x * scalar);
+		v.y = (v.y * scalar);
 	}
 	
 	// Returns distance between two vectors using distance formula
