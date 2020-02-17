@@ -11,8 +11,8 @@ public class PlayerShip extends Ship {
 				 //origFlameXPts = {-6,-23,-6}, 
 				 //origFlameYPts = {-3,0,3};
 	
-	int[] origXPts = xPts;
-	int[] origYPts = yPts;
+	final int[] origXPts = {14,-10,-6,-10};
+	final int[] origYPts = {0,-8,0,8};
 	
 	// Optional flag to make ship larger/smaller
 	static final double sizeFactor = 1;
@@ -29,11 +29,13 @@ public class PlayerShip extends Ship {
 	// ==============================
 
 	// Updates vector points based on current position
+	// Needs to be called every time the ships's location vector changes
 	public void updatePoints() {
 		for(int i=0; i<xPts.length; i++) {
 			xPts[i] = origXPts[i] + loc.x;
 			yPts[i] = origYPts[i] + loc.y;
 			
+			// These aren't working right now
 			//xPts[i]=(int)(xPts[i]*Math.cos(angle)-yPts[i]*Math.sin(angle));
 			//yPts[i]=(int)(xPts[i]*Math.sin(angle)+yPts[i]*Math.cos(angle));
 		}
@@ -42,13 +44,12 @@ public class PlayerShip extends Ship {
 	
 	public void moveTest() {
 		loc.x++;
+		//angle+=.01;
+		updatePoints();
 	}
 
 	
 	public void draw(Graphics g) {
-		
-		updatePoints();
-		
 		g.setColor(Color.red);
 		g.fillPolygon(xPts, yPts, 4);
 	}
