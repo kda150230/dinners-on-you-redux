@@ -25,7 +25,7 @@ public class GameManager extends JPanel implements Runnable {
 	JPanel game;
 	
 	// Game objects must be static, as we're using an instance of this class for a JPanel
-	static PlayerShip myShip;
+	static PlayerShip myShip, enemyShip;
 
 	
 	// Called when "Play" button on main menu is pressed
@@ -73,15 +73,37 @@ public class GameManager extends JPanel implements Runnable {
 	
 	// Initializes all starting entities such as player ships and bases
 	public void initEntities() {
-		myShip = new PlayerShip(new Vector(25, 25), 0);
+		myShip = new PlayerShip(new Vector(300, 300), Team.BLUE);
+		enemyShip = new PlayerShip(new Vector(600, 600), Team.RED);
 	}
 	
+	// Initializes key listener for game inputs
 	public void initKeyAdapter(JPanel game) {
 		game.addKeyListener(new KeyAdapter() {
+			
 			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_A) {
-					System.out.println("Right!");
+				if(e.getKeyCode() == KeyEvent.VK_W) {
+					System.out.println("Up!");
+					myShip.setAccelerating(true);
 					myShip.addSpeed(.2);
+				}
+				if(e.getKeyCode() == KeyEvent.VK_A) {
+					System.out.println("Left!");
+					myShip.addAngle(-.1);
+				}
+				if(e.getKeyCode() == KeyEvent.VK_S) {
+					//System.out.println("Down!");
+					//myShip.addSpeed(-.2);
+				}
+				if(e.getKeyCode() == KeyEvent.VK_D) {
+					System.out.println("Right!");
+					myShip.addAngle(.1);
+				}
+			}
+			
+			public void keyReleased(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_W) {
+					myShip.setAccelerating(false);
 				}
 			}
 		});
@@ -100,6 +122,7 @@ public class GameManager extends JPanel implements Runnable {
 		
 		if(myShip != null) {
 			myShip.draw(g);
+			enemyShip.draw(g);
 		}
 	}
 	

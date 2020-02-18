@@ -14,6 +14,7 @@ public abstract class Entity {
 	protected double acceleration;
 	protected double angle;
 	protected boolean isAlive = true;
+	protected Team team;
 	public Shape hitbox;
 
 	public void kill() {
