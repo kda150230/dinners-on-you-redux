@@ -63,6 +63,10 @@ public class PlayerShip extends Ship {
 	public void addSpeed(double addedSpeed) {
 		this.speed += addedSpeed;
 	}
+	
+	public void addAngle(double addedAngle) {
+		this.angle += addedAngle;
+	}
 
 	
 	public void draw(Graphics g) {

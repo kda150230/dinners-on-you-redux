@@ -3,6 +3,7 @@ package main;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
 
 import javax.swing.*;
 
@@ -14,20 +15,12 @@ public class GamePanel extends JPanel{
 	
 	static JFrame frame;
 	static JPanel gamePanel;
-	
-	//PlayerShip myShip = new PlayerShip(new Vector(500, 500), 0);
 
 	public void paint(Graphics g) {
 		// Draws the menu background color
 		g.setColor(new Color(0, 1, 41));
 		g.fillRect(0, 0, xRes, yRes);
 		//myShip.draw(g); /* this works though... */
-	}
-	
-	public static void add(JComponent comp) {
-		frame.add(comp);
-		comp.setVisible(true);
-		//comp.setLayout(null);
 	}
 	
 	public static void init() {
@@ -74,12 +67,11 @@ public class GamePanel extends JPanel{
 		playButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				// Closes menu frame
+				frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+				// Creates GameManager instance and starts the game
 				GameManager gameManager = new GameManager();
-				gameManager.start();
-				
-				playButton.setVisible(false);
-				//frame.remove(playButton);
-				
+				gameManager.start();		
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -94,5 +86,4 @@ public class GamePanel extends JPanel{
 		// Add the playButton to our JFrame
 		frame.add(playButton);
 	}
-	
 }

@@ -76,12 +76,25 @@ public class GameManager extends JPanel implements Runnable {
 		myShip = new PlayerShip(new Vector(25, 25), 0);
 	}
 	
+	// Initializes key listener for game inputs
 	public void initKeyAdapter(JPanel game) {
 		game.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_A) {
-					System.out.println("Right!");
+				if(e.getKeyCode() == KeyEvent.VK_W) {
+					System.out.println("Up!");
 					myShip.addSpeed(.2);
+				}
+				if(e.getKeyCode() == KeyEvent.VK_A) {
+					System.out.println("Left!");
+					myShip.addAngle(-.1);
+				}
+				if(e.getKeyCode() == KeyEvent.VK_S) {
+					System.out.println("Down!");
+					myShip.addSpeed(-.2);
+				}
+				if(e.getKeyCode() == KeyEvent.VK_D) {
+					System.out.println("Right!");
+					myShip.addAngle(.1);
 				}
 			}
 		});
